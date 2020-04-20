@@ -1,31 +1,5 @@
 # Plateforme de Prototypage
-## Partie 3 : Votre 1er objet connecté !
-
-### Besoin d'aide ?
-**Posez toutes vos questions sur le Gitter du cours :  [![Gitter](https://badges.gitter.im/PP-ECE/community.svg)](https://gitter.im/PP-ECE/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)**
-
-### Prérequis
-1. Avoir un binôme
-2. Créer un compte Gitlab
-3. Installer Git ([Windows](https://gitforwindows.org/), [Ubuntu](https://help.ubuntu.com/lts/serverguide/git.html), ou [OSX](https://git-scm.com/download/mac))
-4. Installer [VS Code](https://code.visualstudio.com/)
-5. Ajouter l'extension [PlatformIO IDE](https://platformio.org/) à VS Code
-
-### Objectif
-Votre objectif lors de ce TP est d'utiliser ce que vous avez appris lors des TP PokeAMole et MQTT pour donner vie à votre 1er objet connecté. Les plus avancés d'entre vous pourrons en profiter pour exprimer leur créativité ou renforcer leurs connaissance en développement logiciel embarqué.
-
-Afin de vérifier votre compréhension du fonctionnement de l'environnement de développement et de votre travail, **vous devrez mettre à jour votre `git repository` sur gitlab**.
-Vous devrez donc `commit` vos modifications régulièrements.
-
-### Evaluation
-L'évaluation de votre travail sera réalisée sur les critères suivants :
-- Exercices terminées
-- Respect des consignes de nommage des `branch` et `tag` git
-- Contenu et description des `commit`
-- Qualité du code (structure, lisibilité, commentaires utiles si et seulement si nécessaire...)
-- Temps nécessaire pour réaliser les exercices
-- Créativité sur de nouvelles fonctionnalités
-- Documentation de nouvelles fonctionnalités via le README
+## Poke a mole connecté
 
 ### Quelques resources
 Documentation technique :
@@ -46,20 +20,20 @@ Tips & tricks :
 - [Exemple d'utilisation d'un serveur NTP](https://gitlab.com/snippets/1961896) : obtenir la date et l'heure via internet
 - [Exemple de stockage/lecture en mémoire non volatile](https://github.com/espressif/arduino-esp32/blob/master/libraries/Preferences/examples/StartCounter/StartCounter.ino) : Pour stocker des informations à conserver même après extinction de la carte.
 
-# Exercice - Poke A Mole connecté :
+# Le projet :
 
 ### Objectif
-Vous avez réalisé une application Poke A Mole permettant a un joueur de mesurer son temps de réaction. Vous avez ensuite appris à communiquer avec le service Cloud AWS IoT.
-Vous devez maintenant assembler ces deux fonctionnalités pour réaliser un objet connecté.
+J'ai réalisé une application Poke A Mole permettant a un joueur de mesurer son temps de réaction. J'ai ensuite appris à communiquer avec le service Cloud AWS IoT.
+Je dois maintenant assembler ces deux fonctionnalités pour réaliser un objet connecté.
 
-**Au démarrage de la carte, votre code devra :**
+**Au démarrage de la carte, mon code doit :**
 
 1. Afficher le message `Welcome` sur l'écran OLED
-2. Si le Wifi est configuré, tenter de se connecter au Wifi, afficher le message `Waiting for Wifi` et le SSID du wifi recherché. Sinon un portail captif nommé `PokeAMole-Bxx` (remplacer xx par votre numéro de binôme) démarre pour configurer le Wifi et le message `Please setup` et `wifi`.
+2. Si le Wifi est configuré, tenter de se connecter au Wifi, afficher le message `Waiting for Wifi` et le SSID du wifi recherché. Sinon un portail captif nommé `PokeAMole-B02` démarre pour configurer le Wifi et le message `Please setup` et `wifi`.
 3. Une fois la connexion Wifi établie, tenter de se connecter à AWS IoT, efface l'écran OLED et afficher le message `Waiting for Server`.
 4. Une fois la connexion AWS IoT établie, effacer l'écran OLED et s'inscrire au topic `ecepp/PokeAMole/score`
 
-**Une fois l'initialisation terminée, votre code devra :**
+**Une fois l'initialisation terminée, mon code doit :**
 
 1. Allumer la LED et afficher le message `Poke A Mole` et `Long press to start` sur l'écran OLED
 - Lorsqu'un utilisateur réalise un simple clic sur le bouton, si un high score existe en mémoire (non volatile), l'écran OLED est effacé, le message `High score`, sa valeur, la date et le numéro du binôme l'ayant réalisé doivent-être affiché sur l'écran OLED durant 5 secondes puis retourner à l'étape 1.
@@ -72,7 +46,7 @@ Vous devez maintenant assembler ces deux fonctionnalités pour réaliser un obje
    - Le temps de réactivité de l'utilisateur doit-être publié sur le topic `ecepp/PokeAMole/score` avec le formalisme suivant :
    ```
     { 
-      "user" : "Bxx", // **Replacer Bxx par le numéro de binôme**
+      "user" : "B02",
       "score" : zzzz, // **Remplacer zzzz par le temps de réaction en millisecondes quelques soit la valeur**
       "date" : "dd/mm/yy hh:mm:ss" // **Remplacer dd/mm/yy hh:mm:ss par la date et l'heure locale** 
     }
@@ -85,37 +59,7 @@ Vous devez maintenant assembler ces deux fonctionnalités pour réaliser un obje
 5. Si aucune interaction utilisateur n'a lieu durant plus de 1O minutes, la carte doit passer en mode `deep sleep` et doit en sortir après un appui sur le bouton `PRG`
 
 
-**Pour permettre à l'utilisateur de réinitialiser la carte, votre code devra :**
+**Pour permettre à l'utilisateur de réinitialiser la carte, mon code doit :**
 
 - Si en même temps que l'utilisateur branche la carte à une source d'alimentation USB, il maintient appuyé le bouton `PRG` durant plus de 5 secondes, les données de Wifi et de high score doivent-être effacées.
 
-
-### Instructions
-1. Cloner le projet
-2. Ouvrir le projet avec PlatformIO
-3. Créer une `branch` nommée **develop**
-4. Compléter la structure de code fourni avec les fonctions implémentées pour répondre à l'Exercice-2 des TP `PokeAMole` et `MQTT`
-5. Modifier le code pour réaliser l'application demandé et `commit` régulièrement
-6. Une fois l'implémentation terminée, `merge` la `branch` **develop** avec la `branch` **master** et tagguer le `commit` à corriger avec le tag **v1.0**
-
-# You can do it ! - Exprimer votre créativité :
-
-### Objectif
-Carte blanche pour implémenter des fonctions complémentaires sans pour autant modifier le comportement demandé dans l'Exercice.
-
-Voici quelques pistes :
-- Rendre l'application Poke A Mole fonctionnelle en mode hors ligne et afficher un icône sur l'écran OLED pour indiquer l'absence de connexion internet/AWS IoT.
-- Amélioration de la gestion de l'écran OLED : Centrer verticalement les messages. Gérer les renvoie à la ligne des messages trop long. Création d'une animation d'attente lors de l'établissement de la connexion Wifi et AWS IoT. Mise en valeur du jeu Poke A Mole avec une taupe qui apparait sur l'écran pour remplacer l'utilisation de la LED...
-- Ajouter un jeu type T-Rex Google Chrome (chrome://dino/ & appuyer sur espace) qui utilise le bouton et l'ecran OLED. Pour naviguer entre ce jeu et Poke A Mole, l'utilisateur doit réaliser un double clic sur l'écran d'accueil de Poke A Mole.
-- Utiliser Freertos et les interuptions, dans le framework Arduino, pour gagner en précision sur le temps de réaction utilisateur
-
-### Instructions
-1. Travailler sur la `branch` **develop**
-2. Compléter le fichier `README.md` dans la section **Nouvelles fonctionnalités** avec les instructions pour utiliser les fonctionnalités implémentées.
-3. Tagguer le `commit` à corriger avec le tag **v2.0**
-
-**MERCI DE NE SURTOUT PAS MERGE LA BRANCH DEVELOP AVEC LA BRANCH MASTER POUR CETTE SECTION BONUS**
-
-### Nouvelles fonctionnalités
-
-À compléter à votre convenance :)
